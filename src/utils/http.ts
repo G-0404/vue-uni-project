@@ -4,7 +4,7 @@ import { useMemberStore } from '@/stores'
  * @Author: 微生
  * @Date: 2024-01-31 13:38:33
  * @LastEditors: WeiSheng 842469165@qq.com
- * @LastEditTime: 2024-01-31 15:59:18
+ * @LastEditTime: 2024-01-31 21:34:20
  * @FilePath: /demo-xtx/src/utils/http.ts
  * @Description:
  *
@@ -15,7 +15,6 @@ const baseURL = 'https://pcapi-xiaotuxian-front-devtest.itheima.net'
 const httpInterceptor = {
   // request 拦截前触发
   invoke(options: UniApp.RequestOptions) {
-    console.log(1111, options)
     if (!options.url.startsWith('http')) {
       options.url = baseURL + options.url
     }
@@ -39,7 +38,7 @@ const httpInterceptor = {
     console.log('interceptor-fail', err)
   },
   complete(res: UniApp.RequestOptions) {
-    console.log('interceptor-complete', res)
+    // console.log('interceptor-complete', res)
   }
 }
 uni.addInterceptor('request', httpInterceptor)
@@ -56,7 +55,6 @@ export const request = <T>(options: UniApp.RequestOptions) => {
       ...options,
       // 响应成功
       success(res) {
-        console.log('resresres', res)
         if (res.statusCode >= 200 && res.statusCode <= 300) {
           resolve(res.data as Data<T>)
         } else if (res.statusCode === 401) {
@@ -75,8 +73,12 @@ export const request = <T>(options: UniApp.RequestOptions) => {
         }
       },
       // 服务器挂了，网络出错才会走fail
-      fail(res) {
-        reject(res)
+      fail(err) {
+        uni.showToast({
+          icon: 'none',
+          title: '网络错误，换个网络试试吧'
+        })
+        reject(err)
       }
     })
   })
