@@ -1,3 +1,13 @@
+/*
+ * @Author: 微生
+ * @Date: 2024-01-30 15:39:17
+ * @LastEditors: WeiSheng 842469165@qq.com
+ * @LastEditTime: 2024-01-31 13:22:15
+ * @FilePath: /demo-xtx/src/stores/modules/member.ts
+ * @Description:
+ *
+ * Copyright (c) 2024 by 微生, All Rights Reserved.
+ */
 import { defineStore } from 'pinia'
 import { ref } from 'vue'
 
@@ -22,11 +32,21 @@ export const useMemberStore = defineStore(
     return {
       profile,
       setProfile,
-      clearProfile,
+      clearProfile
     }
   },
   // TODO: 持久化
   {
-    persist: true,
-  },
+    // persist: true,
+    persist: {
+      storage: {
+        getItem(key) {
+          return uni.getStorageSync(key)
+        },
+        setItem(key, value) {
+          uni.setStorageSync(key, value)
+        }
+      }
+    }
+  }
 )
