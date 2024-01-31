@@ -2,7 +2,7 @@
  * @Author: 微生
  * @Date: 2024-01-30 15:39:17
  * @LastEditors: WeiSheng 842469165@qq.com
- * @LastEditTime: 2024-01-31 21:05:19
+ * @LastEditTime: 2024-01-31 23:59:02
  * @FilePath: /demo-xtx/src/types/component.d.ts
  * @Description:
  *
@@ -15,9 +15,13 @@
  */
 import 'vue'
 import CommonGSwiper from '@/components/CommonGSwiper.vue'
+import CommonGGuess from '@/components/CommonGGuess.vue'
 declare module 'vue' {
   export interface GlobalComponents {
     //
     CommonGSwiper: typeof CommonGSwiper
+    CommonGGuess: typeof CommonGGuess
   }
 }
+
+export type CommonGGuess = InstanceType<typeof CommonGGuess>

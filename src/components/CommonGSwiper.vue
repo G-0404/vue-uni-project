@@ -2,7 +2,7 @@
  * @Author: 微生
  * @Date: 2024-01-31 20:44:30
  * @LastEditors: WeiSheng 842469165@qq.com
- * @LastEditTime: 2024-01-31 21:37:34
+ * @LastEditTime: 2024-01-31 22:47:56
  * @FilePath: /demo-xtx/src/components/CommonGSwiper.vue
  * @Description:
  *
@@ -10,45 +10,33 @@
 -->
 <template>
   <view class="carousel">
-    <swiper :circular="true" @change="handleChanle" :autoplay="false" :interval="3000">
-      <swiper-item>
-        <navigator url="/pages/index/index" hover-class="none" class="navigator">
-          <image
-            mode="aspectFill"
-            class="image"
-            src="https://pcapi-xiaotuxian-front-devtest.itheima.net/miniapp/uploads/slider_1.jpg"></image>
-        </navigator>
-      </swiper-item>
-      <swiper-item>
-        <navigator url="/pages/index/index" hover-class="none" class="navigator">
-          <image
-            mode="aspectFill"
-            class="image"
-            src="https://pcapi-xiaotuxian-front-devtest.itheima.net/miniapp/uploads/slider_2.jpg"></image>
-        </navigator>
-      </swiper-item>
-      <swiper-item>
-        <navigator url="/pages/index/index" hover-class="none" class="navigator">
-          <image
-            mode="aspectFill"
-            class="image"
-            src="https://pcapi-xiaotuxian-front-devtest.itheima.net/miniapp/uploads/slider_3.jpg"></image>
+    <swiper :circular="true" @change="handleChanle" :autoplay="true" :interval="3000">
+      <swiper-item v-for="(item, index) in swiper_banner_list">
+        <navigator :url="item.hrefUrl" hover-class="none" class="navigator">
+          <image mode="aspectFill" class="image" :src="item.imgUrl"></image>
         </navigator>
       </swiper-item>
     </swiper>
     <!-- 指示点 -->
     <view class="indicator">
-      <text v-for="(item, index) in 3" :key="item" class="dot" :class="{ active: index === activeIndex }"></text>
+      <text
+        v-for="(item, index) in swiper_banner_list"
+        :key="item.id"
+        class="dot"
+        :class="{ active: index === activeIndex }"></text>
     </view>
   </view>
 </template>
 <script setup lang="ts">
+import type { BannerItem } from '@/types/home'
 import { ref } from 'vue'
 const activeIndex = ref(0)
-// const swiper_banner_list = ref([])
 const handleChanle: UniHelper.SwiperOnChange = (e) => {
   activeIndex.value = e.detail.current
 }
+defineProps<{
+  swiper_banner_list: BannerItem[]
+}>()
 </script>
 <style lang="scss">
 :host {
