@@ -6,7 +6,7 @@
  * @FilePath: /demo-xtx/src/api/home.ts
  * @Description:
  *
- * Copyright (c) 2024 by 微生, All Rights Reserved.
+ * Copyright (c) 2024 by 微生, All Rights Reserved. test
  */
 import { request } from '@/utils/http'
 import type { BannerItem, CategoryMutliItem, HotMutliItem, GuessLikeItem } from '@/types/home'
@@ -22,7 +22,7 @@ export const getHomeBannerAPI = (data = { distributionSite: 1 }) => {
   return request<BannerItem[]>({
     url: '/home/banner',
     method: 'GET',
-    data
+    data,
   })
 }
 /**
@@ -34,7 +34,7 @@ export const getHomeBannerAPI = (data = { distributionSite: 1 }) => {
 export const getCategoryMutliAPI = () => {
   return request<CategoryMutliItem[]>({
     url: '/home/category/mutli',
-    method: 'GET'
+    method: 'GET',
   })
 }
 /**
@@ -46,7 +46,7 @@ export const getCategoryMutliAPI = () => {
 export const getHotMutliAPI = () => {
   return request<HotMutliItem[]>({
     url: '/home/hot/mutli',
-    method: 'GET'
+    method: 'GET',
   })
 }
 /**
@@ -59,7 +59,7 @@ export const getGuessLikeListAPI = (data = { page: 1, pageSize: 10 }) => {
   return request<GuessLikeItem>({
     url: '/home/goods/guessLike',
     method: 'GET',
-    data
+    data,
   })
 }
 
@@ -73,6 +73,6 @@ export const getHotrecommendAPI = (url: string, data: HotParams) => {
   return request<HotItem>({
     url,
     method: 'GET',
-    data
+    data,
   })
 }
