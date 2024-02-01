@@ -10,8 +10,13 @@
     <view class="categories">
       <!-- 左侧：一级分类 -->
       <scroll-view class="primary" scroll-y>
-        <view v-for="(item, index) in 10" :key="item" class="item" :class="{ active: index === 0 }">
-          <text class="name"> 居家 </text>
+        <view
+          @tap="current_index = index"
+          v-for="(item, index) in classify_list"
+          :key="item.id"
+          class="item"
+          :class="{ active: index === current_index }">
+          <text class="name">{{ item.name }}</text>
         </view>
       </scroll-view>
       <!-- 右侧：二级分类 -->
@@ -19,20 +24,23 @@
         <!-- 焦点图 -->
         <CommonGSwiper class="banner" :swiper_banner_list="top_swiper_list" />
         <!-- 内容区域 -->
-        <view class="panel" v-for="item in 3" :key="item">
+        <view class="panel" v-for="item in current_secondary_classify" :key="item.id">
           <view class="title">
-            <text class="name">宠物用品</text>
+            <text class="name">{{ item.name }}</text>
             <navigator class="more" hover-class="none">全部</navigator>
           </view>
           <view class="section">
-            <navigator v-for="goods in 4" :key="goods" class="goods" hover-class="none" :url="`/pages/goods/goods?id=`">
-              <image
-                class="image"
-                src="https://yanxuan-item.nosdn.127.net/674ec7a88de58a026304983dd049ea69.jpg"></image>
-              <view class="name ellipsis">木天蓼逗猫棍</view>
+            <navigator
+              v-for="fItem in item.goods"
+              :key="fItem.id"
+              class="goods"
+              hover-class="none"
+              :url="`/pages/goods/goods?id=${fItem.id}`">
+              <image class="image" :src="fItem.picture"></image>
+              <view class="name ellipsis">{{ fItem.desc }}</view>
               <view class="price">
                 <text class="symbol">¥</text>
-                <text class="number">16.00</text>
+                <text class="number">{{ fItem.price }}</text>
               </view>
             </navigator>
           </view>
@@ -45,9 +53,13 @@
 import { onLoad } from '@dcloudio/uni-app'
 import { getHomeBannerAPI } from '@/api/home'
 import type { BannerItem } from '@/types/home'
+import type { classifyItem, secondaryClassifyItem } from '@/types/classify'
+import { getClassifyListAPI } from '@/api/classify'
 import { ref } from 'vue'
-onLoad(() => {
-  getHomeBannerDATA()
+import { computed } from 'vue'
+onLoad(async () => {
+  await getHomeBannerDATA()
+  await getClassifyListDATA()
 })
 const top_swiper_list = ref<BannerItem[]>([])
 const getHomeBannerDATA = async () => {
@@ -57,6 +69,18 @@ const getHomeBannerDATA = async () => {
   const res = await getHomeBannerAPI(params)
   top_swiper_list.value = res.result
 }
+
+const classify_list = ref<classifyItem[]>([])
+const getClassifyListDATA = async () => {
+  const res = await getClassifyListAPI()
+  console.log('getClassifyListAPI', res.result)
+  classify_list.value = res.result
+}
+
+const current_secondary_classify = computed(() => {
+  return classify_list.value[current_index.value]?.children
+})
+const current_index = ref(0)
 </script>
 <style lang="scss">
 page {
