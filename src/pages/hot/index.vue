@@ -50,16 +50,18 @@ const hotMap = [
   { type: '3', title: '一站买全', url: '/hot/oneStop' },
   { type: '4', title: '新鲜好物', url: '/hot/new' }
 ]
-const type = ref<string>('1')
+const current_type = ref<string>('1')
 const current_tag_index = ref<number>(0)
 onLoad(async (options) => {
+  current_type.value = options?.type
   const currHot = hotMap.find((v) => v.type === options?.type)
+
   uni.setNavigationBarTitle({ title: currHot!.title })
   await getHotrecommendDATA()
 })
 
 const page_data = ref<HotItem>()
-const params = ref<HotParams>({ page: 1, pageSize: 10, subType: '1' })
+// const params = ref<HotParams>({ page: 1, pageSize: 10, subType: '1' })
 /**
  *
  *  @func 获得页面所需数据
@@ -67,11 +69,11 @@ const params = ref<HotParams>({ page: 1, pageSize: 10, subType: '1' })
  *  @return {TYPE}
  **/
 const getHotrecommendDATA = async () => {
-  const currHot = hotMap.find((v) => v.type === type.value)
+  const currHot = hotMap.find((v) => v.type === current_type.value)
   console.log('currHot', currHot)
-  console.log('params', params.value)
-
-  const res = await getHotrecommendAPI(currHot!.url, params.value)
+  // console.log('params', params.value)
+  const params = { page: 1, pageSize: 10, subType: current_type.value }
+  const res = await getHotrecommendAPI(currHot!.url, params)
   console.log(4464654654, res.result)
   if (res.result) {
     page_data.value = res.result
