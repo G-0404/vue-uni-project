@@ -21,7 +21,10 @@ declare module 'vue' {
     //
     CommonGSwiper: typeof CommonGSwiper
     CommonGGuess: typeof CommonGGuess
+    CustomNavbarRef: typeof CustomNavbar
   }
 }
 
 export type CommonGGuess = InstanceType<typeof CommonGGuess>
+export type CommonGSwiper = InstanceType<typeof CommonGSwiper>
+export type CustomNavbarRef = InstanceType<typeof CustomNavbarRef>

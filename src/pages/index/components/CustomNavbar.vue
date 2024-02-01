@@ -2,7 +2,7 @@
  * @Author: 微生
  * @Date: 2024-01-31 16:22:14
  * @LastEditors: WeiSheng 842469165@qq.com
- * @LastEditTime: 2024-01-31 20:49:06
+ * @LastEditTime: 2024-02-01 11:45:53
  * @FilePath: /demo-xtx/src/pages/index/components/CustomNavbar.vue
  * @Description:
  *
@@ -24,6 +24,7 @@
   </view>
 </template>
 <script setup lang="ts">
+import { onLoad, onShow } from '@dcloudio/uni-app'
 import { ref } from 'vue'
 const system_info: UniApp.GetSystemInfoResult = uni.getSystemInfoSync()
 const statusBarHeight = ref(0)
@@ -33,12 +34,17 @@ statusBarHeight.value = system_info.statusBarHeight as number
 <style lang="scss">
 /* 自定义导航条 */
 .navbar {
+  position: fixed;
+  top: 0;
+  left: 0;
+  z-index: 100;
   background-image: url(@/static/images/navigator_bg.png);
   background-size: cover;
-  position: relative;
   display: flex;
   flex-direction: column;
   padding-top: 20px;
+  box-sizing: border-box;
+  width: 100vw;
   .logo {
     display: flex;
     align-items: center;

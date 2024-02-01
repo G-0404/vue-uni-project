@@ -1,3 +1,13 @@
+/*
+ * @Author: 微生
+ * @Date: 2024-01-31 21:29:20
+ * @LastEditors: WeiSheng 842469165@qq.com
+ * @LastEditTime: 2024-02-01 19:50:56
+ * @FilePath: /demo-xtx/src/types/home.ts
+ * @Description:
+ *
+ * Copyright (c) 2024 by 微生, All Rights Reserved.
+ */
 export type BannerItem = {
   id: string
   hrefUrl: string

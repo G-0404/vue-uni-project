@@ -2,7 +2,7 @@
  * @Author: 微生
  * @Date: 2024-01-30 15:39:17
  * @LastEditors: WeiSheng 842469165@qq.com
- * @LastEditTime: 2024-02-01 00:22:47
+ * @LastEditTime: 2024-02-01 19:39:39
  * @FilePath: /demo-xtx/src/pages/index/index.vue
  * @Description:
  *
@@ -10,37 +10,50 @@
 -->
 
 <template>
-  <view class="container-home-page">
+  <view class="container-home-page" :style="{ 'padding-top': 80 + statusBarHeight + 'px' }">
     <!-- 顶部Navbar -->
     <CustomNavbar></CustomNavbar>
-    <!-- 轮播组件 -->
-    <CommonGSwiper :swiper_banner_list="swiper_banner_list"></CommonGSwiper>
-    <!-- 分类 -->
-    <CategoryPanel :category_mutli_list="category_mutli_list"></CategoryPanel>
-    <!-- 热门推荐 -->
-    <HotPanel :hot_mutli_list="hot_mutli_list"></HotPanel>
-    <!-- 猜你喜欢 -->
-    <scroll-view scroll-y @scrolltolower="onScrolltolower">
+    <scroll-view
+      @refresherrefresh="onRefreshStart"
+      :refresher-enabled="true"
+      :refresher-triggered="is_refresh"
+      scroll-y
+      @scrolltolower="onScrolltolower">
+      <!-- 轮播组件 -->
+      <CommonGSwiper :swiper_banner_list="swiper_banner_list"></CommonGSwiper>
+      <!-- 分类 -->
+      <CategoryPanel :category_mutli_list="category_mutli_list"></CategoryPanel>
+      <!-- 热门推荐 -->
+      <HotPanel :hot_mutli_list="hot_mutli_list"></HotPanel>
+      <!-- 猜你喜欢 -->
       <CommonGGuess ref="guessRef"></CommonGGuess>
     </scroll-view>
   </view>
 </template>
 <script setup lang="ts">
 // import CustomNavbar from './CustomNavbar.vue'
-import { getHomeBannerAPI, getCategoryMutliAPI, getHotMutliAPI, getGuessLikeListAPI } from '@/api/home'
+import { getHomeBannerAPI, getCategoryMutliAPI, getHotMutliAPI } from '@/api/home'
 import CustomNavbar from '@/pages/index/components/CustomNavbar.vue'
 import CategoryPanel from './components/CategoryPanel.vue'
 import HotPanel from './components/HotPanel.vue'
 import { ref } from 'vue'
-import type { BannerItem, CategoryMutliItem, HotMutliItem, GuessLikeItem, GoodsItem } from '@/types/home'
+import type { BannerItem, CategoryMutliItem, HotMutliItem } from '@/types/home'
 import { onLoad } from '@dcloudio/uni-app'
 import type { CommonGGuess } from '@/types/component'
+onload
 onLoad(async () => {
+  pageInit()
+})
+
+const pageInit = async () => {
   await getHomeBannerData()
   await getCategoryMutliData()
   await getHotMutliData()
-  // await getGuessLikeListData()
-})
+}
+
+const system_info: UniApp.GetSystemInfoResult = uni.getSystemInfoSync()
+const statusBarHeight = ref(0)
+statusBarHeight.value = system_info.statusBarHeight as number
 
 const swiper_banner_list = ref<BannerItem[]>([])
 const getHomeBannerData = async () => {
@@ -70,11 +83,19 @@ const guessRef = ref<CommonGGuess>()
 
 // 滚动触底事件
 const onScrolltolower = () => {
-  console.log(13123241312)
-
-  // console.log(guessRef.value)
-
   guessRef.value?.getGuessLikeListData()
+}
+
+const is_refresh = ref(false)
+const onRefreshStart = async () => {
+  is_refresh.value = true
+  guessRef.value?.resetData()
+  await Promise.all([await getHomeBannerData(), await getCategoryMutliData(), await getHotMutliData()])
+  onRefreshStop()
+}
+
+const onRefreshStop = () => {
+  is_refresh.value = false
 }
 </script>
 <style lang="scss">

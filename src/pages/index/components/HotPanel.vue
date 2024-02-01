@@ -2,7 +2,7 @@
  * @Author: 微生
  * @Date: 2024-01-31 23:17:05
  * @LastEditors: WeiSheng 842469165@qq.com
- * @LastEditTime: 2024-01-31 23:30:28
+ * @LastEditTime: 2024-02-01 19:41:11
  * @FilePath: /demo-xtx/src/pages/index/components/HotPanel.vue
  * @Description:
  *
@@ -17,7 +17,7 @@
         <text class="title-text">{{ item.title }}</text>
         <text class="title-desc">{{ item.alt }}</text>
       </view>
-      <navigator hover-class="none" url="/pages/hot/hot" class="cards">
+      <navigator hover-class="none" :url="`/pages/hot/index?type=${item.type}`" class="cards">
         <image v-for="fItem in item.pictures" class="image" mode="aspectFit" :src="fItem"></image>
       </navigator>
     </view>
