@@ -35,7 +35,7 @@
               :key="fItem.id"
               class="goods"
               hover-class="none"
-              :url="`/pages/goods/goods?id=${fItem.id}`">
+              :url="`/pages/goods/goods/index?id=${fItem.id}`">
               <image class="image" :src="fItem.picture"></image>
               <view class="name ellipsis">{{ fItem.desc }}</view>
               <view class="price">
